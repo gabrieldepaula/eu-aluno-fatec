@@ -103,12 +103,10 @@ class DatabaseSeeder extends Seeder
         ];
 
         foreach($fatecs as $fatec) {
-
             DB::table('colleges')->insert([
                 'name' => $fatec,
                 'created_at' => now(),
             ]);
-
         }
 
         DB::table('students')->insert([
@@ -116,7 +114,7 @@ class DatabaseSeeder extends Seeder
             'email' => 'gabriel.leite7@fatec.sp.gov.br',
             'password' => Hash::make('12345678'),
             'email_verified_at' => now(),
-            'remember_token' => Str::random(10),
+            'active' => true,
             'created_at' => now(),
         ]);
     }

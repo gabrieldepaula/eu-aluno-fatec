@@ -17,8 +17,15 @@ use App\Http\Controllers\Student\AuthController;
 
 Route::namespace('Student')->name('student.')->group(function() {
 
+    Route::get('/verificar-email/{token}', [AuthController::class, 'verifyEmail'])->name('verify-email');
+    Route::match(['get', 'post'], '/cadastrar-nova-senha/{token}', [AuthController::class, 'recoverPassword'])->name('recover-password');
     Route::match(['get', 'post'], '/entrar', [AuthController::class, 'login'])->name('login');
-    Route::get('/sair', [AuthController::class, 'logout'])->name('logout');
+    Route::match(['get', 'post'], '/cadastre-se', [AuthController::class, 'register'])->name('register');
+    Route::match(['get', 'post'], '/esqueci-minha-senha', [AuthController::class, 'forgotPassword'])->name('forgot-password');
 
-    Route::get('/', [HomeController::class, 'index'])->name('home.index');
+    Route::middleware(['auth.student'])->group(function() {
+        Route::get('/sair', [AuthController::class, 'logout'])->name('logout');
+
+        Route::get('/', [HomeController::class, 'index'])->name('home.index');
+    });
 });
