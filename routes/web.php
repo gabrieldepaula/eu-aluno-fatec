@@ -1,6 +1,8 @@
 <?php
 
 use Illuminate\Support\Facades\Route;
+use App\Http\Controllers\Student\HomeController;
+use App\Http\Controllers\Student\AuthController;
 
 /*
 |--------------------------------------------------------------------------
@@ -13,6 +15,10 @@ use Illuminate\Support\Facades\Route;
 |
 */
 
-Route::get('/entrar', function() {
-    return view('login.index');
+Route::namespace('Student')->name('student.')->group(function() {
+
+    Route::match(['get', 'post'], '/entrar', [AuthController::class, 'login'])->name('login');
+    Route::get('/sair', [AuthController::class, 'logout'])->name('logout');
+
+    Route::get('/', [HomeController::class, 'index'])->name('home.index');
 });
