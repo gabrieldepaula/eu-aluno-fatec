@@ -6,6 +6,11 @@
             <a href="{{ route('student.forgot-password') }}" class="h1"><b>EuAluno</b>Fatec</a>
         </div>
         <div class="card-body">
+            @if(session('message'))
+                <div class="alert alert-success">
+                    {!! session('message') !!}
+                </div>
+            @endif
             <p class="login-box-msg">Esqueceu sua senha? Digite seu e-mail abaixo que enviaremos um link para você cadastrar uma nova.</p>
             <form method="post">
                 @csrf

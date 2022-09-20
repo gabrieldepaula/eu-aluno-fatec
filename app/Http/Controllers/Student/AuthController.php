@@ -93,7 +93,7 @@ class AuthController extends Controller
             $student->save();
             $student->notify(new StudentVerifyEmail($student->email_verification_token));
 
-            return redirect()->route('student.register')->with('message', 'Enviamos um e-mail para o endereço fornecido, clique no link contido nele para ativar sua conta e fazer login. <a href="'.route('student.login').'">Clique aqui para voltar ao login.</a>');
+            return redirect()->route('student.register')->with('message', 'Enviamos um e-mail para o endereço fornecido, clique no link para ativar a sua conta. <a href="'.route('student.login').'">Voltar para o login.</a>');
         }
 
         $data = [
@@ -140,6 +140,8 @@ class AuthController extends Controller
             $student->save();
 
             $student->notify(new StudentForgotPassword($student->forgot_password_token));
+
+            return redirect()->route('student.forgot-password')->with('message', 'Enviamos um e-mail para o endereço fornecido. Clique no link para cadastrar uma nova senha. <a href="'.route('student.login').'">Voltar para o login.</a>');
         }
 
         $data = [
@@ -149,7 +151,7 @@ class AuthController extends Controller
         return view('student.auth.forgot-password', compact('data'));
     }
 
-    public function recoverPassword(Request $request, $token) {
+    public function recoverPassword(Request $request, $token = null) {
 
         $student = Student::active()->where('forgot_password_token', $token)->firstOrFail();
 
@@ -166,7 +168,7 @@ class AuthController extends Controller
             ]);
 
             if($validator->fails()) {
-                return redirect()->route('student.recover-password')->withErrors($validator)->withInput();
+                return redirect()->route('student.recover-password', ['token' => $token])->withErrors($validator)->withInput();
             }
 
             $validated = $validator->safe()->only(['password']);
