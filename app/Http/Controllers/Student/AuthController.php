@@ -16,8 +16,6 @@ class AuthController extends Controller
 {
     public function login(Request $request) {
 
-        if(Session::get('student_id')) return redirect()->route('student.home.index');
-
         if($request->isMethod('post')) {
 
             $validator = Validator::make($request->all(), [

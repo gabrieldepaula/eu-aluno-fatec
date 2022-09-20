@@ -38,4 +38,8 @@ class Student extends Model
             set: fn ($value) => Hash::make($value),
         );
     }
+
+    public function college() {
+        return $this->belongsTo(College::class);
+    }
 }

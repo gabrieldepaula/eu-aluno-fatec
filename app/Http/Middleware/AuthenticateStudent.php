@@ -25,7 +25,13 @@ class AuthenticateStudent
             return redirect()->route('student.login');
         }
 
-        View::share('student', Student::findOrFail($studentId));
+        $student = Student::findOrFail($studentId);
+
+        if(!$student->complete && $request->route()->getName() != 'student.home.index') {
+            return redirect()->route('student.home.index');
+        }
+
+        View::share('student', $student);
 
         return $next($request);
     }
