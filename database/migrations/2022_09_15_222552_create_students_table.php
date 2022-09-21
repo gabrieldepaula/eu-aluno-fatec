@@ -15,7 +15,8 @@ return new class extends Migration
     {
         Schema::create('students', function (Blueprint $table) {
             $table->id();
-            $table->foreignId('college_id');
+            $table->foreignId('college_id')->nullable();
+            $table->foreignId('course_id')->nullable();
             $table->string('name');
             $table->string('email')->unique();
             $table->string('password');

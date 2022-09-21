@@ -25,7 +25,10 @@ Route::namespace('Student')->name('student.')->group(function() {
 
     Route::middleware(['auth.student'])->group(function() {
         Route::get('/sair', [AuthController::class, 'logout'])->name('logout');
+        Route::match(['get', 'post'], '/completar-cadastro', [AuthController::class, 'completeRegistration'])->name('complete-registration');
 
-        Route::get('/', [HomeController::class, 'index'])->name('home.index');
+        Route::middleware(['student.incomplete.registration'])->group(function() {
+            Route::get('/', [HomeController::class, 'index'])->name('home.index');
+        });
     });
 });

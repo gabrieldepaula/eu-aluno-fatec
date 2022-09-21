@@ -42,4 +42,12 @@ class Student extends Model
     public function college() {
         return $this->belongsTo(College::class);
     }
+
+    public function course() {
+        return $this->belongsTo(Course::class);
+    }
+
+    public function subjects() {
+        return $this->belongsToMany(Subject::class);
+    }
 }

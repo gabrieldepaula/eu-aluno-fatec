@@ -3,6 +3,9 @@
 namespace App\Http\Controllers\Student;
 
 use App\Http\Controllers\Controller;
+use App\Models\Course;
+use App\Models\College;
+use App\Models\Subject;
 use App\Models\Student;
 use App\Notifications\StudentVerifyEmail;
 use App\Notifications\StudentForgotPassword;
@@ -15,6 +18,8 @@ use Illuminate\Support\Facades\Validator;
 class AuthController extends Controller
 {
     public function login(Request $request) {
+
+        if(Session::get('student_id')) return redirect()->route('student.home.index');
 
         if($request->isMethod('post')) {
 
@@ -34,7 +39,6 @@ class AuthController extends Controller
             }
 
             $validated = $validator->safe()->only(['email', 'password']);
-
             $student = Student::active()->where('email', $validated['email'])->first();
 
             if(!$student || !Hash::check($validated['password'], $student->password)) {
@@ -43,9 +47,7 @@ class AuthController extends Controller
             }
 
             Session::put('student_id', $student->id);
-
             return redirect()->route('student.home.index');
-
         }
 
         $data = [
@@ -56,11 +58,13 @@ class AuthController extends Controller
     }
 
     public function logout(Request $request) {
-        Session::forget('student_id');
+        Session::invalidate();
         return redirect()->route('student.login');
     }
 
     public function register(Request $request) {
+
+        if(Session::get('student_id')) return redirect()->route('student.home.index');
 
         if($request->isMethod('post')) {
 
@@ -115,6 +119,8 @@ class AuthController extends Controller
     }
 
     public function forgotPassword(Request $request) {
+
+        if(Session::get('student_id')) return redirect()->route('student.home.index');
 
         if($request->isMethod('post')) {
 
@@ -184,5 +190,44 @@ class AuthController extends Controller
         ];
 
         return view('student.auth.recover-password', compact('data'));
+    }
+
+    public function completeRegistration(Request $request) {
+
+        if($request->isMethod('post')) {
+
+            $validator = Validator::make($request->all(), [
+                'college_id' => 'required|exists:colleges,id',
+                'course_id' => 'required|exists:courses,id',
+                'subjects' => 'required|array',
+                'subjects.*' => 'exists:subjects,id',
+            ], [
+                'required' => 'Este campo é obrigatório.',
+                'array' => 'Dados inválidos.',
+                'exists' => 'Dados inválidos.',
+            ]);
+
+            if($validator->fails()) {
+                return redirect()->route('student.home.index')->withErrors($validator)->withInput();
+            }
+
+            $validated = $validator->safe()->only(['college_id', 'course_id', 'subjects']);
+
+            $student = $this->getStudent();
+            $student->college_id = $validated['college_id'];
+            $student->course_id = $validated['course_id'];
+            $student->complete = 1;
+            $student->save();
+
+            $student->subjects()->sync($validated['subjects']);
+
+            return redirect()->route('student.home.index');
+        }
+
+        $colleges = College::active()->orderBy('name', 'asc')->get();
+        $courses = Course::active()->orderBy('name', 'asc')->get();
+        $subjects = Subject::active()->orderBy('name', 'asc')->get();
+
+        return view('student.auth.complete-registration', compact('colleges', 'courses', 'subjects'));
     }
 }

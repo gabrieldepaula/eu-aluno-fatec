@@ -8,4 +8,12 @@ use Illuminate\Database\Eloquent\Model;
 class Subject extends Model
 {
     use HasFactory;
+
+    public function scopeActive($query) {
+        return $query->where('active', true);
+    }
+
+    public function students() {
+        return $this->belongsToMany(Student::class);
+    }
 }
