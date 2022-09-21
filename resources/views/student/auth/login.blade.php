@@ -3,7 +3,7 @@
 <div class="login-box">
     <div class="card card-outline card-danger">
         <div class="card-header text-center">
-            <a href="{{ route('student.login') }}" class="h1"><b>EuAluno</b>Fatec</a>
+            <a href="{{ route('student.login') }}" class="h1" style="font-family: 'Fugaz One';"><b>EuAluno</b>Fatec</a>
         </div>
         <div class="card-body">
             <p class="login-box-msg">Faça login para iniciar a sua sessão</p>

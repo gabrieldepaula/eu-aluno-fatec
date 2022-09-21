@@ -3,7 +3,7 @@
 <div class="login-box">
     <div class="card card-outline card-danger">
         <div class="card-header text-center">
-            <a href="{{ route('student.forgot-password') }}" class="h1"><b>EuAluno</b>Fatec</a>
+            <a href="{{ route('student.forgot-password') }}" class="h1" style="font-family: 'Fugaz One';"><b>EuAluno</b>Fatec</a>
         </div>
         <div class="card-body">
             @if(session('message'))
