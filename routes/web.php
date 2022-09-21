@@ -29,6 +29,7 @@ Route::namespace('Student')->name('student.')->group(function() {
 
         Route::middleware(['student.incomplete.registration'])->group(function() {
             Route::get('/', [HomeController::class, 'index'])->name('home.index');
+            Route::get('/tarefas', [TaskController::class, 'index'])->name('task.index');
         });
     });
 });
