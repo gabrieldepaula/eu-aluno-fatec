@@ -208,7 +208,7 @@ class AuthController extends Controller
             ]);
 
             if($validator->fails()) {
-                return redirect()->route('student.home.index')->withErrors($validator)->withInput();
+                return redirect()->route('student.complete-registration')->withErrors($validator)->withInput();
             }
 
             $validated = $validator->safe()->only(['college_id', 'course_id', 'subjects']);

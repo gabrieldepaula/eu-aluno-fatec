@@ -12,8 +12,14 @@
             <ul class="nav nav-pills nav-sidebar flex-column" data-widget="treeview" role="menu" data-accordion="false">
                 @if($student->complete)
                     <li class="nav-item">
-                        <a href="{{ route('student.task.index') }}" class="nav-link active">
+                        <a href="{{ route('student.home.index') }}" class="nav-link @if(Route::is('student.home.index')) active @endif">
                             <i class="nav-icon fas fa-tachometer-alt"></i>
+                            <p>Home</p>
+                        </a>
+                    </li>
+                    <li class="nav-item">
+                        <a href="{{ route('student.task.index') }}" class="nav-link @if(Route::is('student.task.index')) active @endif">
+                            <i class="nav-icon fas fa-tasks"></i>
                             <p>Tarefas</p>
                         </a>
                     </li>

@@ -1,8 +1,9 @@
 <?php
 
 use Illuminate\Support\Facades\Route;
-use App\Http\Controllers\Student\HomeController;
 use App\Http\Controllers\Student\AuthController;
+use App\Http\Controllers\Student\HomeController;
+use App\Http\Controllers\Student\TaskController;
 
 /*
 |--------------------------------------------------------------------------
@@ -29,6 +30,9 @@ Route::namespace('Student')->name('student.')->group(function() {
 
         Route::middleware(['student.incomplete.registration'])->group(function() {
             Route::get('/', [HomeController::class, 'index'])->name('home.index');
+
+            Route::get('/tarefas/editar/{id}', [TaskController::class, 'save'])->name('task.edit');
+            Route::get('/tarefas/cadastrar', [TaskController::class, 'save'])->name('task.new');
             Route::get('/tarefas', [TaskController::class, 'index'])->name('task.index');
         });
     });

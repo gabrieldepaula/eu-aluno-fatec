@@ -1,15 +1,7 @@
 @extends('student.template.base')
 
-@push('css')
-<link rel="stylesheet" href="{{ asset('assets/vendor/select2/css/select2.min.css') }}">
-<link rel="stylesheet" href="{{ asset('assets/vendor/adminlte/css/select2-adminlte.css') }}">
-@endpush
-
 @push('js')
-<script src="{{ asset('assets/vendor/select2/js/select2.full.min.js') }}"></script>
-<script>
-    $('.select2').select2();
-</script>
+    <script src="{{ asset('assets/student/js/page-complete-registration-index.js') }}"></script>
 @endpush
 
 @section('content')
