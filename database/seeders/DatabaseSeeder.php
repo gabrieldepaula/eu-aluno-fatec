@@ -97,8 +97,10 @@ class DatabaseSeeder extends Seeder
 
         foreach($fatecs as $fatec) {
             DB::table('colleges')->insert([
-                'name' => $fatec,
+                'code' => Str::random(3),
+                'title' => $fatec,
                 'created_at' => now(),
+                'updated_at' => now(),
             ]);
         }
 
@@ -193,8 +195,10 @@ class DatabaseSeeder extends Seeder
 
         foreach($courses as $course) {
             DB::table('courses')->insert([
-                'name' => $course,
+                'code' => Str::random(3),
+                'title' => $course,
                 'created_at' => now(),
+                'updated_at' => now(),
             ]);
         }
 
@@ -249,8 +253,10 @@ class DatabaseSeeder extends Seeder
 
         foreach($subjects as $subject) {
             DB::table('subjects')->insert([
-                'name' => $subject,
+                'code' => Str::random(3),
+                'title' => $subject,
                 'created_at' => now(),
+                'updated_at' => now(),
             ]);
         }
 
@@ -262,6 +268,7 @@ class DatabaseSeeder extends Seeder
             'email_verified_at' => now(),
             'active' => true,
             'created_at' => now(),
+            'updated_at' => now(),
         ]);
 
         DB::table('students')->insert([
@@ -272,6 +279,7 @@ class DatabaseSeeder extends Seeder
             'email_verified_at' => now(),
             'active' => true,
             'created_at' => now(),
+            'updated_at' => now(),
         ]);
     }
 }

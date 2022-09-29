@@ -224,9 +224,9 @@ class AuthController extends Controller
             return redirect()->route('student.home.index');
         }
 
-        $colleges = College::active()->orderBy('name', 'asc')->get();
-        $courses = Course::active()->orderBy('name', 'asc')->get();
-        $subjects = Subject::active()->orderBy('name', 'asc')->get();
+        $colleges = College::active()->orderBy('title', 'asc')->get();
+        $courses = Course::active()->orderBy('title', 'asc')->get();
+        $subjects = Subject::active()->orderBy('title', 'asc')->get();
 
         return view('student.auth.complete-registration', compact('colleges', 'courses', 'subjects'));
     }

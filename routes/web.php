@@ -31,8 +31,9 @@ Route::namespace('Student')->name('student.')->group(function() {
         Route::middleware(['student.incomplete.registration'])->group(function() {
             Route::get('/', [HomeController::class, 'index'])->name('home.index');
 
-            Route::get('/tarefas/editar/{id}', [TaskController::class, 'save'])->name('task.edit');
-            Route::get('/tarefas/cadastrar', [TaskController::class, 'save'])->name('task.new');
+            Route::get('/tarefas/editar/{task}', [TaskController::class, 'form'])->name('task.edit');
+            Route::get('/tarefas/cadastrar', [TaskController::class, 'form'])->name('task.new');
+            Route::post('/tarefas/{task?}', [TaskController::class, 'save'])->name('task.save');
             Route::get('/tarefas', [TaskController::class, 'index'])->name('task.index');
         });
     });

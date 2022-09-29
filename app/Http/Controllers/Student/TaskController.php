@@ -5,6 +5,7 @@ namespace App\Http\Controllers\Student;
 use App\Models\Task;
 use Illuminate\Http\Request;
 use App\Http\Controllers\Controller;
+use App\Http\Requests\SaveTaskRequest;
 
 class TaskController extends Controller
 {
@@ -16,18 +17,18 @@ class TaskController extends Controller
         $student = $this->getStudent();
 
         $dtData = [];
-        foreach($student->tasks as $item) {
+        foreach($student->tasks as $task) {
 
             $actions = '';
-            $actions .= '<button type="button" class="btn btn-outline-primary btn-block btn-xs" data-action="mark-as-done" data-id="'.$item->id.'"><i class="fas fa-check"></i> Feito</button>';
-            $actions .= '<button type="button" class="btn btn-outline-success btn-block btn-xs" data-action="mark-as-delivered" data-id="'.$item->id.'"><i class="fas fa-check"></i> Entregue</button>';
+            $actions .= '<button type="button" class="btn btn-outline-primary btn-block btn-xs" data-action="mark-as-done" data-id="'.$task->id.'"><i class="fas fa-check"></i> Feito</button>';
+            $actions .= '<button type="button" class="btn btn-outline-success btn-block btn-xs" data-action="mark-as-delivered" data-id="'.$task->id.'"><i class="fas fa-check"></i> Entregue</button>';
 
             $dtData[] = [
-                'code' => $item->code,
-                'title' => '<a href="'.route('student.task.edit', ['id' => $item->id]).'">'.$item->title.'</a>',
-                'subject' => $item->subject->name,
-                'delivery_date' => '<span class="d-none">'.$item->delivery_date->format('Y-m-d H:i').'</span>'.$item->delivery_date->format('d/m/Y'),
-                'status' => $item->getstatusText(),
+                'code' => $task->code,
+                'title' => '<a href="'.route('student.task.edit', ['task' => $task]).'">'.$task->title.'</a>',
+                'subject' => $task->subject->title,
+                'delivery_date' => '<span class="d-none">'.$task->delivery_date->format('Y-m-d H:i').'</span>'.$task->delivery_date->format('d/m/Y'),
+                'status' => $task->getstatusText(),
                 'actions' => $actions,
             ];
         }
@@ -42,15 +43,15 @@ class TaskController extends Controller
         } else {
             switch($request->input('action')) {
                 case 'mark-as-done':
-                    $item = Task::find($request->input('id'));
-                    $item->done_at = now();
-                    $item->save();
+                    $task = Task::find($request->input('id'));
+                    $task->done_at = now();
+                    $task->save();
                     return response()->json(['error' => false]);
                     break;
                 case 'mark-as-delivered':
-                    $item = Task::find($request->input('id'));
-                    $item->delivered_at = now();
-                    $item->save();
+                    $task = Task::find($request->input('id'));
+                    $task->delivered_at = now();
+                    $task->save();
                     return response()->json(['error' => false]);
                     break;
 
@@ -67,8 +68,26 @@ class TaskController extends Controller
         }
     }
 
-    public function save(Request $request, $id = null) {
-        $item = $id ? Task::findOrFail($id) : new Task();
-        return view('student.task.save', compact('item'));
+    public function form(Request $request, Task $task) {
+        return view('student.task.save', compact('task'));
+    }
+
+    public function save(SaveTaskRequest $request, Task $task) {
+
+        $validated = $request->safe()->only([
+            'subject_id',
+            'title',
+            'notes',
+            'delivery_date',
+        ]);
+
+        $message = 'Tarefa '.($task->exists ? 'atualizada' : 'cadastrada').' com sucesso.';
+
+        $task->fill($validated);
+
+        $student = $this->getStudent();
+        $student->tasks()->save($task);
+
+        return redirect()->route('student.task.index')->with('message', $message);
     }
 }
