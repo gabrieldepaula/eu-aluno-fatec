@@ -25,7 +25,7 @@
                     </li>
 
                     <li class="nav-item">
-                        <a href="../gallery.html" class="nav-link">
+                        <a href="{{ route('student.config.index') }}" class="nav-link @if(Route::is('student.config.index')) active @endif">
                             <i class="nav-icon fas fa-user-cog"></i>
                             <p>Configurações</p>
                         </a>

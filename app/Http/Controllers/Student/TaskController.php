@@ -11,20 +11,20 @@ class TaskController extends Controller
 {
     public function index(Request $request) {
 
-        // $item = Task::find(4);
-        // dd($item->delivery_date->format('d/m/Y H:i:s'));
-
-        // $value = '31/12/2022 11:22:33';
-        // $date = \Carbon\Carbon::createFromFormat('d/m/Y H:i:s', $value);
-        // dd($date->format('Y-m-d H:i:s'));
-
-        // $item = new Task();
-        // $item->delivery_date = $value;
-        // $item->delivery_date = $date->format('Y-m-d H:i:s');
-        // dd($item->delivery_date->format('d/m/Y H:i:s'));
-        // dd($item->delivery_date->format('Y-m-d H:i:s'));
-
-        return $request->ajax() ? $this->table() : view('student.task.index');
+        if($request->ajax()) {
+            return $this->table();
+        } else {
+            $student = $this->getStudent();
+            $subjects = [];
+            foreach($student->subjects as $subject) {
+                $subjects[] = [
+                    'id' => $subject->id,
+                    'title' => $subject->title,
+                ];
+            }
+            return view('student.task.index', compact('subjects'));
+        }
+        // return $request->ajax() ? $this->table() : view('student.task.index');
     }
 
     private function table() {
@@ -33,22 +33,29 @@ class TaskController extends Controller
         $dtData = [];
         foreach($student->tasks as $task) {
 
+            $isDone = $task->isDone();
+            $isDelivered = $task->isDelivered();
+
             $actions = '';
-            $actions .= '<button type="button" class="btn btn-outline-primary btn-block btn-xs" data-action="mark-as-done" data-id="'.$task->id.'"><i class="fas fa-check"></i> Feito</button>';
-            $actions .= '<button type="button" class="btn btn-outline-success btn-block btn-xs" data-action="mark-as-delivered" data-id="'.$task->id.'"><i class="fas fa-check"></i> Entregue</button>';
-            $actions .= '<button type="button" class="btn btn-outline-danger btn-block btn-xs" data-action="delete" data-id="'.$task->id.'"><i class="fas fa-trash"></i> Apagar</button>';
+            if(!$isDone) $actions .= '<button type="button" class="btn btn-outline-primary btn-block btn-xs" data-action="mark-as-done" data-id="'.$task->id.'"><i class="fas fa-check"></i> Feito</button>';
+            if(!$isDelivered) {
+                $actions .= '<button type="button" class="btn btn-outline-success btn-block btn-xs" data-action="mark-as-delivered" data-id="'.$task->id.'"><i class="fas fa-check"></i> Entregue</button>';
+                $actions .= '<button type="button" class="btn btn-outline-danger btn-block btn-xs" data-action="delete" data-id="'.$task->id.'"><i class="fas fa-trash"></i> Apagar</button>';
+            }
 
             $dtData[] = [
-                'code' => $task->id,
+                'code' => str_pad($task->id, 4, '0', STR_PAD_LEFT),
                 'title' => '<a href="'.route('student.task.edit', ['task' => $task]).'">'.$task->title.'</a>',
-                'subject' => $task->subject->title,
+                'subject' => '<span class="d-none">subject-'.$task->subject->id.'</span>'.$task->subject->title,
                 'delivery_date' => '<span class="d-none">'.$task->delivery_date->format('Y-m-d H:i:s').'</span>'.$task->delivery_date->format('d/m/Y H:i'),
+                'done_at' => $isDone ? '<span class="d-none">'.$task->done_at->format('Y-m-d H:i:s').'</span>'.$task->done_at->format('d/m/Y H:i') : '',
+                'delivered_at' => $isDelivered ? '<span class="d-none">'.$task->delivered_at->format('Y-m-d H:i:s').'</span>'.$task->delivered_at->format('d/m/Y H:i') : '',
                 'status' => $task->getstatusText(),
                 'actions' => $actions,
             ];
         }
 
-        return datatables($dtData)->rawColumns(['title', 'delivery_date', 'status', 'actions'])->toJson();
+        return datatables($dtData)->rawColumns(['title', 'subject', 'delivery_date', 'done_at', 'delivered_at', 'status', 'actions'])->toJson();
     }
 
     public function actions(Request $request) {
@@ -66,6 +73,7 @@ class TaskController extends Controller
                 case 'mark-as-delivered':
                     $task = Task::find($request->input('id'));
                     $task->delivered_at = now();
+                    if(!$task->done_at) $task->done_at = now();
                     $task->save();
                     return response()->json(['error' => false]);
                     break;

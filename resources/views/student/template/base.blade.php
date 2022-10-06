@@ -3,6 +3,7 @@
 <head>
     <meta charset="utf-8">
     <meta name="viewport" content="width=device-width, initial-scale=1">
+    <meta name="csrf-token" content="{{ csrf_token() }}">
     <title>EuAlunoFatec</title>
     <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Source+Sans+Pro:300,400,400i,700&display=fallback">
     <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Fugaz+One">
@@ -23,6 +24,23 @@
         </div>
         @include('student.template.footer')
     </div>
+    <script>
+        @php
+            $cmsRoutes = [];
+            foreach(Route::getRoutes() as $route) {
+                if(in_array('POST', $route->methods) && Str::contains($route->getName(), '.actions')) {
+                    $cmsRoutes[] = [
+                        'name' => $route->getName(),
+                        'url' => url($route->uri),
+                    ];
+                }
+            }
+        @endphp
+        const cmsRoute = function(myName = '') {
+            const routes = JSON.parse('{!! json_encode($cmsRoutes) !!}');
+            return routes.find(x => x.name == myName).url ?? false;
+        };
+    </script>
     <script src="{{ asset('assets/vendor/jquery/jquery.min.js') }}"></script>
     <script src="{{ asset('assets/vendor/bootstrap/js/bootstrap.bundle.min.js') }}"></script>
     <script src="{{ asset('assets/vendor/select2/js/select2.full.min.js') }}"></script>

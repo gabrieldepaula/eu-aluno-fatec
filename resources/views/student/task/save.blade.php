@@ -8,7 +8,7 @@
     <script src="{{ asset('assets/vendor/inputmask/jquery.inputmask.min.js') }}"></script>
     <script src="{{ asset('assets/vendor/moment/moment-with-locales.min.js') }}"></script>
     <script src="{{ asset('assets/vendor/tempusdominus-bootstrap-4/js/tempusdominus-bootstrap-4.min.js') }}"></script>
-    <script src="{{ asset('assets/student/js/page-task-index.js') }}"></script>
+    <script src="{{ asset('assets/student/js/page-task-save.js') }}"></script>
 @endpush
 
 @section('content')
@@ -60,7 +60,7 @@
                             <div class="form-group">
                                 <label>Data de Entrega</label>
                                   <div class="input-group date" id="delivery_date_input" data-target-input="nearest">
-                                      <input type="text" name="delivery_date" class="form-control datetimepicker-input @error('delivery_date') is-invalid @enderror" data-target="#delivery_date_input" value="{{ old('delivery_date', $task->delivery_date) }}"/>
+                                      <input type="text" name="delivery_date" class="form-control datetimepicker-input @error('delivery_date') is-invalid @enderror" data-target="#delivery_date_input" value="{{ old('delivery_date', $task->exists ? $task->delivery_date->format('d/m/Y H:i') : '') }}"/>
                                       <div class="input-group-append" data-target="#delivery_date_input" data-toggle="datetimepicker">
                                           <div class="input-group-text"><i class="fa fa-calendar"></i></div>
                                       </div>
