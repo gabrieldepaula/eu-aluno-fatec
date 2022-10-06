@@ -17,12 +17,11 @@ return new class extends Migration
             $table->id();
             $table->foreignId('student_id');
             $table->foreignId('subject_id');
-            $table->string('code');
             $table->string('title');
-            $table->date('delivery_date');
+            $table->dateTime('delivery_date');
             $table->text('notes')->nullable();
-            $table->date('done_at')->nullable();
-            $table->date('delivered_at')->nullable();
+            $table->dateTime('done_at')->nullable();
+            $table->dateTime('delivered_at')->nullable();
             $table->timestamps();
         });
     }

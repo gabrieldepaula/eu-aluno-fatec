@@ -10,6 +10,20 @@ use App\Http\Requests\SaveTaskRequest;
 class TaskController extends Controller
 {
     public function index(Request $request) {
+
+        // $item = Task::find(4);
+        // dd($item->delivery_date->format('d/m/Y H:i:s'));
+
+        // $value = '31/12/2022 11:22:33';
+        // $date = \Carbon\Carbon::createFromFormat('d/m/Y H:i:s', $value);
+        // dd($date->format('Y-m-d H:i:s'));
+
+        // $item = new Task();
+        // $item->delivery_date = $value;
+        // $item->delivery_date = $date->format('Y-m-d H:i:s');
+        // dd($item->delivery_date->format('d/m/Y H:i:s'));
+        // dd($item->delivery_date->format('Y-m-d H:i:s'));
+
         return $request->ajax() ? $this->table() : view('student.task.index');
     }
 
@@ -22,12 +36,13 @@ class TaskController extends Controller
             $actions = '';
             $actions .= '<button type="button" class="btn btn-outline-primary btn-block btn-xs" data-action="mark-as-done" data-id="'.$task->id.'"><i class="fas fa-check"></i> Feito</button>';
             $actions .= '<button type="button" class="btn btn-outline-success btn-block btn-xs" data-action="mark-as-delivered" data-id="'.$task->id.'"><i class="fas fa-check"></i> Entregue</button>';
+            $actions .= '<button type="button" class="btn btn-outline-danger btn-block btn-xs" data-action="delete" data-id="'.$task->id.'"><i class="fas fa-trash"></i> Apagar</button>';
 
             $dtData[] = [
-                'code' => $task->code,
+                'code' => $task->id,
                 'title' => '<a href="'.route('student.task.edit', ['task' => $task]).'">'.$task->title.'</a>',
                 'subject' => $task->subject->title,
-                'delivery_date' => '<span class="d-none">'.$task->delivery_date->format('Y-m-d H:i').'</span>'.$task->delivery_date->format('d/m/Y'),
+                'delivery_date' => '<span class="d-none">'.$task->delivery_date->format('Y-m-d H:i:s').'</span>'.$task->delivery_date->format('d/m/Y H:i'),
                 'status' => $task->getstatusText(),
                 'actions' => $actions,
             ];
@@ -74,7 +89,7 @@ class TaskController extends Controller
 
     public function save(SaveTaskRequest $request, Task $task) {
 
-        $validated = $request->safe()->only([
+        $data = $request->safe()->only([
             'subject_id',
             'title',
             'notes',
@@ -83,7 +98,12 @@ class TaskController extends Controller
 
         $message = 'Tarefa '.($task->exists ? 'atualizada' : 'cadastrada').' com sucesso.';
 
-        $task->fill($validated);
+        $deliveryDate = \Carbon\Carbon::createFromFormat('d/m/Y H:i', $data['delivery_date']);
+
+        $task->subject_id       = $data['subject_id'];
+        $task->title            = $data['title'];
+        $task->notes            = $data['notes'];
+        $task->delivery_date    = $deliveryDate->format('Y-m-d H:i:s');
 
         $student = $this->getStudent();
         $student->tasks()->save($task);

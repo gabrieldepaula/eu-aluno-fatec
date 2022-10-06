@@ -24,9 +24,9 @@ class SaveTaskRequest extends FormRequest
     public function rules()
     {
         return [
-            'subject_id'        => 'required',
-            'title'             => 'required',
-            'notes'             => 'required',
+            'subject_id'        => 'required|exists:subjects,id',
+            'title'             => 'required|string|min:3|max:255',
+            'notes'             => 'nullable|string|max:2000',
             'delivery_date'     => 'required',
         ];
     }

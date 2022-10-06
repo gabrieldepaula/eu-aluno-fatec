@@ -2,22 +2,22 @@
 
 namespace App\Models;
 
+use DateTimeInterface;
 use Illuminate\Support\Str;
 use Illuminate\Database\Eloquent\Model;
+use Illuminate\Database\Eloquent\Casts\Attribute;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 
 class Task extends Model
 {
     use HasFactory;
 
-    public static function boot()
-    {
-        parent::boot();
-
-        self::creating(function($model){
-            $model->code = $model->subject->code.'-'.Str::random(2);
-        });
-    }
+    // public static function boot() {
+    //     parent::boot();
+    //     self::creating(function($model) {
+    //         $model->code = $model->subject->code.'-'.Str::random(2);
+    //     });
+    // }
 
     protected $fillable = [
         'subject_id',
@@ -26,11 +26,17 @@ class Task extends Model
         'delivery_date',
     ];
 
-    protected $casts = [
-        'delivery_date' => 'date',
-        'done_at' => 'date',
-        'delivered_at' => 'date',
+    protected $dates = [
+        'delivery_date',
+        'done_at',
+        'delivered_at',
     ];
+
+    protected function id(): Attribute {
+        return Attribute::make(
+            get: fn ($value) => $value ? str_pad($value, 4, '0', STR_PAD_LEFT) : null,
+        );
+    }
 
     public function subject() {
         return $this->belongsTo(Subject::class);

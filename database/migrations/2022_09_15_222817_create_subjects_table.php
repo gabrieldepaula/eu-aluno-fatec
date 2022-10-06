@@ -15,7 +15,6 @@ return new class extends Migration
     {
         Schema::create('subjects', function (Blueprint $table) {
             $table->id();
-            $table->string('code');
             $table->string('title');
             $table->boolean('active')->default(true);
             $table->timestamps();
