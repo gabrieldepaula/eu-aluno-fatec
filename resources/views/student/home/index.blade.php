@@ -26,7 +26,7 @@
                 </div>
             </div>
             <div class="col-lg-3 col-6">
-                <div class="small-box bg-success">
+                <div class="small-box bg-warning">
                     <div class="inner">
                         <h3>{{ $data['tasks']['pending'] }}</h3>
                         <p>Tarefas Pendentes</p>
@@ -37,7 +37,7 @@
                 </div>
             </div>
             <div class="col-lg-3 col-6">
-                <div class="small-box bg-warning">
+                <div class="small-box bg-success">
                     <div class="inner">
                         <h3>{{ $data['tasks']['delivered'] }}</h3>
                         <p>Tarefas Entregues</p>

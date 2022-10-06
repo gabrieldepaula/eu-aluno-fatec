@@ -63,7 +63,7 @@ const $table = $('#items').DataTable({
     orderCellsTop: true,
     fixedHeader: true,
     oLanguage : datatables_ptbr,
-    order: [[0, "desc"]],
+    order: [[6, "desc"]],
     pageLength: 25,
     ajax: {url: window.location.href},
     serverSide: true,
