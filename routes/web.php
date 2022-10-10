@@ -38,6 +38,7 @@ Route::namespace('Student')->name('student.')->group(function() {
             Route::post('/tarefas/{task?}', [TaskController::class, 'save'])->name('task.save');
             Route::get('/tarefas', [TaskController::class, 'index'])->name('task.index');
 
+            Route::post('/configuracoes', [ConfigurationController::class, 'save'])->name('config.save');
             Route::get('/configuracoes', [ConfigurationController::class, 'index'])->name('config.index');
         });
     });

@@ -72,8 +72,10 @@
                     </div>
                 </div>
                 <div class="card-footer">
-                    <a href="{{ route('student.task.index') }}" class="btn btn-secondary"><i class="fas fa-arrow-left"></i> Voltar</a>
-                    <button type="submit" class="btn btn-primary"><i class="fas fa-save"></i> Salvar</button>
+                    <div class="float-right">
+                        <a href="{{ route('student.task.index') }}" class="btn btn-secondary"><i class="fas fa-arrow-left"></i> Voltar</a>
+                        <button type="submit" class="btn btn-success"><i class="fas fa-save"></i> Salvar</button>
+                    </div>
                 </div>
             </div>
         </form>
