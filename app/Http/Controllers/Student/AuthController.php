@@ -221,7 +221,7 @@ class AuthController extends Controller
 
             $student->subjects()->sync($validated['subjects']);
 
-            return redirect()->route('student.home.index');
+            return redirect()->route('student.home.index')->with('message', 'Cadastro concluído com sucesso.');
         }
 
         $colleges = College::active()->orderBy('title', 'asc')->get();

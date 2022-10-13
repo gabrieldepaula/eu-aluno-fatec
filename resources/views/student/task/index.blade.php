@@ -8,6 +8,14 @@
 @section('content')
 <section class="content-header">
     <div class="container-fluid">
+
+        @if(session('message'))
+            <div class="alert alert-success alert-dismissible">
+                <button type="button" class="close" data-dismiss="alert" aria-hidden="true">×</button>
+                <i class="fas fa-check"></i> {!! session('message') !!}
+            </div>
+        @endif
+
         <div class="row mb-2">
             <div class="col-sm-6">
                 <h1>Tarefas</h1>

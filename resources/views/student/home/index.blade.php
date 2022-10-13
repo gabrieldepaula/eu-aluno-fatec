@@ -3,6 +3,14 @@
 @section('content')
 <section class="content-header">
     <div class="container-fluid">
+
+        @if(session('message'))
+            <div class="alert alert-success alert-dismissible">
+                <button type="button" class="close" data-dismiss="alert" aria-hidden="true">×</button>
+                <i class="fas fa-check"></i> {!! session('message') !!}
+            </div>
+        @endif
+
         <div class="row mb-2">
             <div class="col-sm-6">
                 <h1>Home</h1>
@@ -13,6 +21,7 @@
 
 <section class="content">
     <div class="container-fluid">
+
         <div class="row">
             <div class="col-lg-3 col-6">
                 <div class="small-box bg-info">

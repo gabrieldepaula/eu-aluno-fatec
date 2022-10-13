@@ -12,13 +12,6 @@ class Task extends Model
 {
     use HasFactory;
 
-    // public static function boot() {
-    //     parent::boot();
-    //     self::creating(function($model) {
-    //         $model->code = $model->subject->code.'-'.Str::random(2);
-    //     });
-    // }
-
     protected $fillable = [
         'subject_id',
         'title',

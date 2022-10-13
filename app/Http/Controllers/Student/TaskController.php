@@ -44,7 +44,6 @@ class TaskController extends Controller
             }
 
             $dtData[] = [
-                'code' => str_pad($task->id, 4, '0', STR_PAD_LEFT),
                 'title' => '<a href="'.route('student.task.edit', ['task' => $task]).'">'.$task->title.'</a>',
                 'subject' => '<span class="d-none">subject-'.$task->subject->id.'</span>'.$task->subject->title,
                 'delivery_date' => '<span class="d-none">'.$task->delivery_date->format('Y-m-d H:i:s').'</span>'.$task->delivery_date->format('d/m/Y H:i'),

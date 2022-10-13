@@ -257,26 +257,26 @@ class DatabaseSeeder extends Seeder
             ]);
         }
 
-        DB::table('students')->insert([
-            'college_id' => 41,
-            'name' => 'Gabriel Leite',
-            'email' => 'gabriel.leite7@fatec.sp.gov.br',
-            'password' => Hash::make('12345678'),
-            'email_verified_at' => now(),
-            'active' => true,
-            'created_at' => now(),
-            'updated_at' => now(),
-        ]);
+        // DB::table('students')->insert([
+        //     'college_id' => 41,
+        //     'name' => 'Gabriel Fernandes de Paula Leite',
+        //     'email' => 'gabriel@fatec.sp.gov.br',
+        //     'password' => Hash::make('12345678'),
+        //     'email_verified_at' => now(),
+        //     'active' => true,
+        //     'created_at' => now(),
+        //     'updated_at' => now(),
+        // ]);
 
-        DB::table('students')->insert([
-            'college_id' => 41,
-            'name' => 'Mateus Ivanhes de Paula',
-            'email' => 'mateus@fatec.sp.gov.br',
-            'password' => Hash::make('12345678'),
-            'email_verified_at' => now(),
-            'active' => true,
-            'created_at' => now(),
-            'updated_at' => now(),
-        ]);
+        // DB::table('students')->insert([
+        //     'college_id' => 41,
+        //     'name' => 'Mateus Ivanhes de Paula',
+        //     'email' => 'mateus@fatec.sp.gov.br',
+        //     'password' => Hash::make('12345678'),
+        //     'email_verified_at' => now(),
+        //     'active' => true,
+        //     'created_at' => now(),
+        //     'updated_at' => now(),
+        // ]);
     }
 }

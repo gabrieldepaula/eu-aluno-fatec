@@ -1,13 +1,5 @@
 const columns = [
     {
-        data: 'code',
-        name: 'code',
-        title: 'Código',
-        searchable: true,
-        orderable: true,
-        width: '1%',
-    },
-    {
         data: 'title',
         name: 'title',
         title: 'Tarefa',
@@ -99,7 +91,7 @@ const $table = $('#items').DataTable({
 
             if(column_name == 'subject') {
                 const subjectsItems = JSON.parse(subjects);
-                const select = $('<select class="form-control form-control-sm"><option value="">Todos</option></select>');
+                const select = $('<select class="form-control form-control-sm"><option value="">Todas</option></select>');
                 $.each(subjectsItems, function(i, e) {
                     select.append('<option value="subject-'+e.id+'" '+(state && state.columns[colIndex].search.search == 'subject-'+e.id ? 'selected' : '')+'>'+e.title+'</option>');
                 });
