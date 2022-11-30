@@ -87,10 +87,13 @@ class AuthController extends Controller
                 return redirect()->route('student.register')->withErrors($validator)->withInput();
             }
 
-            $validated = $validator->safe()->only(['name', 'email', 'password']);
+            $data = $validator->safe()->only(['name', 'email', 'password']);
 
             $student = new Student();
-            $student->fill($validated);
+            $student->name = $data['name'];
+            $student->email = $data['email'];
+            $student->password = bcrypt($data['password']);
+
             $student->email_verification_token = Str::random(50);
             $student->save();
             $student->notify(new StudentVerifyEmail($student->email_verification_token));

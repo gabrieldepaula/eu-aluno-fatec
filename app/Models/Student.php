@@ -33,12 +33,6 @@ class Student extends Model
         return $query->where('complete', true);
     }
 
-    protected function password(): Attribute {
-        return Attribute::make(
-            set: fn ($value) => Hash::make($value),
-        );
-    }
-
     public function college() {
         return $this->belongsTo(College::class);
     }
