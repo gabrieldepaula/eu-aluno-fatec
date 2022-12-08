@@ -2,6 +2,9 @@
 
 @push('js')
     <script src="{{ asset('assets/student/js/page-config-index.js') }}"></script>
+    <script>
+        const login_url = '{{ route('student.login') }}';
+    </script>
 @endpush
 
 @section('content')
@@ -107,6 +110,14 @@
                                     @error('subjects') <div class="invalid-feedback">{{ $message }}</div> @enderror
                                 </div>
                             </div>
+                        </div>
+                    </div>
+                    <div class="card card-secondary">
+                        <div class="card-header">
+                            <h3 class="card-title">Apagar Conta</h3>
+                        </div>
+                        <div class="card-body">
+                            <button type="button" class="btn btn-outline-danger btn-delete-account"><i class="fas fa-trash"></i> Apagar conta e todas as minhas tarefas</button>
                         </div>
                     </div>
                 </div>

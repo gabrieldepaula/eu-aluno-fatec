@@ -24,7 +24,6 @@ class TaskController extends Controller
             }
             return view('student.task.index', compact('subjects'));
         }
-        // return $request->ajax() ? $this->table() : view('student.task.index');
     }
 
     private function table() {
