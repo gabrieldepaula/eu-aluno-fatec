@@ -180,7 +180,7 @@ class AuthController extends Controller
 
             $validated = $validator->safe()->only(['password']);
 
-            $student->password = $validated['password'];
+            $student->password = bcrypt($validated['password']);
             $student->save();
 
             Session::put('student_id', $student->id);

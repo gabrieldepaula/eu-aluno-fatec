@@ -26,10 +26,12 @@ Route::namespace('Student')->name('student.')->group(function() {
     Route::match(['get', 'post'], '/esqueci-minha-senha', [AuthController::class, 'forgotPassword'])->name('forgot-password');
 
     Route::middleware(['auth.student'])->group(function() {
+
         Route::get('/sair', [AuthController::class, 'logout'])->name('logout');
         Route::match(['get', 'post'], '/completar-cadastro', [AuthController::class, 'completeRegistration'])->name('complete-registration');
 
         Route::middleware(['student.incomplete.registration'])->group(function() {
+
             Route::get('/', [HomeController::class, 'index'])->name('home.index');
 
             Route::post('/tarefas/actions', [TaskController::class, 'actions'])->name('task.actions');
