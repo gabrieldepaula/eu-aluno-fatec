@@ -25,6 +25,10 @@ class Task extends Model
         'delivered_at',
     ];
 
+    public function student() {
+        return $this->belongsTo(Student::class);
+    }
+
     public function subject() {
         return $this->belongsTo(Subject::class);
     }
